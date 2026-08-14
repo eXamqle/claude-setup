@@ -12,4 +12,5 @@
 #
 # Lines starting with # and blank lines are ignored.
 
-alexgreensh/token-optimizer    token-optimizer@alexgreensh-token-optimizer
+alexgreensh/token-optimizer          token-optimizer@alexgreensh-token-optimizer
+anthropics/claude-plugins-official   playwright@claude-plugins-official
