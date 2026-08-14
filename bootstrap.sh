@@ -30,7 +30,8 @@ command -v claude >/dev/null 2>&1 || die \
 # ---------------------------------------------------------------- 1. get repo
 if [ -d "$SETUP_DIR/.git" ]; then
   info "Updating $SETUP_DIR"
-  git -C "$SETUP_DIR" pull --ff-only --quiet || warn "pull failed; using local copy"
+  git -C "$SETUP_DIR" pull --ff-only --quiet 2>/dev/null \
+    || warn "could not pull (no upstream yet, or offline); using local copy"
 else
   info "Cloning $REPO_SLUG into $SETUP_DIR"
   git clone --quiet "https://github.com/$REPO_SLUG.git" "$SETUP_DIR" \
