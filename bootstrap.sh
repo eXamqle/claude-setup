@@ -2,7 +2,7 @@
 #
 # claude-setup bootstrap -- brings a machine up to the shared Claude Code setup.
 #
-#   curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 #
 # Safe to re-run: it pulls the latest config, then adds/installs only what is
 # missing. Run it again any time you change CLAUDE.md or plugins.txt.

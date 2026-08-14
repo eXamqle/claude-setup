@@ -1,57 +1,45 @@
 # claude-setup
 
-Shared [Claude Code](https://code.claude.com) configuration, so every machine I
-work on has the same global instructions and the same plugins.
+My Claude Code config, same on every machine.
 
-## Bootstrap a machine
+## Set up a machine
 
 ```bash
-curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 ```
 
-That is the only thing worth memorising. No SSH keys, no credentials. It clones
-this repo to `~/.claude-setup`, symlinks `CLAUDE.md` into `~/.claude/`, and
-installs every plugin listed in `plugins.txt` at user scope (active in all
-projects).
+Installs the plugins and links `CLAUDE.md` into `~/.claude/`. Safe to re-run —
+that's also how you apply changes.
 
-Re-run the same line any time to pick up changes — on later runs the clone is a
-no-op and the script pulls instead. It is idempotent.
+## Change something
 
-> This repo is **public**, which is what lets the one-liner work without a
-> token. Everything here is world-readable: keep client names, credentials, and
-> internal details out of `CLAUDE.md`.
+| Want to                  | Edit          |
+| ------------------------ | ------------- |
+| Change global rules      | `CLAUDE.md`   |
+| Add or remove a plugin   | `plugins.txt` |
 
-## What's here
+Then `git commit && git push`, and re-run the line above on the other machines.
 
-| File           | Purpose                                                      |
-| -------------- | ------------------------------------------------------------ |
-| `bootstrap.sh` | Installer. Clone → link → install plugins → enable auto-update |
-| `CLAUDE.md`    | Global instructions, symlinked to `~/.claude/CLAUDE.md`       |
-| `plugins.txt`  | Plugins to install, one per line                              |
+`CLAUDE.md` is symlinked, so edits there apply immediately on this machine
+without re-running anything.
 
 ## Adding a plugin
 
-Append a line to `plugins.txt`:
+One line in `plugins.txt`:
 
 ```
-<marketplace-source>    <plugin>@<marketplace-name>
+owner/repo    plugin-name@marketplace-name
 ```
 
-The marketplace name comes from that repo's `.claude-plugin/marketplace.json`
-`name` field, which frequently differs from the repo name — that mismatch is the
-usual cause of a failed install. Check it with:
+`marketplace-name` comes from that repo's `.claude-plugin/marketplace.json`
+`name` field and often differs from the repo name — that mismatch is the usual
+reason an install fails. Check it:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/OWNER/REPO/main/.claude-plugin/marketplace.json
+curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/.claude-plugin/marketplace.json
 ```
 
-Then commit, push, and re-run the bootstrap on the other machines.
+## Careful
 
-## Notes
-
-- `~/.claude/settings.json` is deliberately **not** stored here. It sits next to
-  `.credentials.json` and per-machine session state, and `claude plugin install`
-  writes the `enabledPlugins` / `extraKnownMarketplaces` entries itself. The
-  bootstrap only patches the `autoUpdate` flag on marketplaces it installed.
-- Plugins execute arbitrary code with your user privileges. Only list sources
-  you trust in `plugins.txt` — it installs them on every machine you own.
+This repo is public — no credentials or client details in it. Plugins run code
+with your privileges on every machine, so only list sources you trust.

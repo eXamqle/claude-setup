@@ -14,7 +14,7 @@ Global config (this file + the plugin list) lives in the public repo
 to re-apply after editing `plugins.txt`:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 ```
 
 This repo is world-readable — never put credentials or client details in it.
