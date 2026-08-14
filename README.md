@@ -6,24 +6,20 @@ work on has the same global instructions and the same plugins.
 ## Bootstrap a machine
 
 ```bash
-git clone git@github.com:eXamqle/claude-setup.git ~/.claude-setup 2>/dev/null; bash ~/.claude-setup/bootstrap.sh
+curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 ```
 
-That is the only thing worth memorising. It clones this repo to
-`~/.claude-setup`, symlinks `CLAUDE.md` into `~/.claude/`, and installs every
-plugin listed in `plugins.txt` at user scope (active in all projects).
+That is the only thing worth memorising. No SSH keys, no credentials. It clones
+this repo to `~/.claude-setup`, symlinks `CLAUDE.md` into `~/.claude/`, and
+installs every plugin listed in `plugins.txt` at user scope (active in all
+projects).
 
 Re-run the same line any time to pick up changes — on later runs the clone is a
 no-op and the script pulls instead. It is idempotent.
 
-Requires this machine's SSH key to be registered with GitHub, which is the same
-key you push with. Test it with `ssh -T git@github.com`. The script falls back
-to HTTPS if SSH is unavailable.
-
-> **Why not `curl … | bash`?** `raw.githubusercontent.com` needs a token for
-> private repos, so that pattern would force this repo public — publishing your
-> global instructions and your list of installed tooling. Cloning over SSH keeps
-> the repo private and carries no secret to each machine.
+> This repo is **public**, which is what lets the one-liner work without a
+> token. Everything here is world-readable: keep client names, credentials, and
+> internal details out of `CLAUDE.md`.
 
 ## What's here
 

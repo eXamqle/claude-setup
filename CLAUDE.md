@@ -9,13 +9,15 @@ project's own `CLAUDE.md`.
 
 ## This machine's Claude Code setup
 
-Global config (this file + the plugin list) lives in the private repo
+Global config (this file + the plugin list) lives in the public repo
 `eXamqle/claude-setup`, cloned to `~/.claude-setup`. To sync a machine to it, or
 to re-apply after editing `plugins.txt`:
 
 ```bash
-git clone git@github.com:eXamqle/claude-setup.git ~/.claude-setup 2>/dev/null; bash ~/.claude-setup/bootstrap.sh
+curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 ```
+
+This repo is world-readable — never put credentials or client details in it.
 
 ## Preferences
 
