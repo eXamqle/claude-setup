@@ -1,0 +1,16 @@
+# Claude Code plugins to install on every machine.
+#
+# One per line, two whitespace-separated fields:
+#
+#   <marketplace-source>            <plugin>@<marketplace-name>
+#
+# The marketplace source is what you'd pass to `claude plugin marketplace add`
+# (a GitHub owner/repo, a git URL, or a local path). The second field is the
+# plugin id, whose marketplace-name comes from that repo's
+# .claude-plugin/marketplace.json "name" field -- it often does NOT match the
+# repo name, which is the most common reason an install fails.
+#
+# Lines starting with # and blank lines are ignored.
+
+ayghri/i-have-adhd             i-have-adhd@i-have-adhd
+alexgreensh/token-optimizer    token-optimizer@alexgreensh-token-optimizer
