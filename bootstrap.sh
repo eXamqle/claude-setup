@@ -2,7 +2,8 @@
 #
 # claude-setup bootstrap -- brings a machine up to the shared Claude Code setup.
 #
-#   curl -sL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
+#   git clone git@github.com:eXamqle/claude-setup.git ~/.claude-setup 2>/dev/null
+#   bash ~/.claude-setup/bootstrap.sh
 #
 # Safe to re-run: it pulls the latest config, then adds/installs only what is
 # missing. Run it again any time you change CLAUDE.md or plugins.txt.
@@ -34,8 +35,12 @@ if [ -d "$SETUP_DIR/.git" ]; then
     || warn "could not pull (no upstream yet, or offline); using local copy"
 else
   info "Cloning $REPO_SLUG into $SETUP_DIR"
-  git clone --quiet "https://github.com/$REPO_SLUG.git" "$SETUP_DIR" \
-    || die "clone failed. Is the repo public and the name correct?"
+  # SSH first, so a private repo works with the key you already push with.
+  # HTTPS second, for a machine with no key registered on GitHub.
+  git clone --quiet "git@github.com:$REPO_SLUG.git" "$SETUP_DIR" 2>/dev/null \
+    || git clone --quiet "https://github.com/$REPO_SLUG.git" "$SETUP_DIR" 2>/dev/null \
+    || die "clone failed. Register this machine's SSH key with GitHub
+       (test with: ssh -T git@github.com), or make the repo public."
 fi
 
 mkdir -p "$CLAUDE_DIR"
