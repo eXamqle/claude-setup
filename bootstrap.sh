@@ -24,6 +24,7 @@ warn() { printf '%s  !!%s %s\n' "$Y" "$N" "$1" >&2; }
 die()  { printf '%s  xx%s %s\n' "$R" "$N" "$1" >&2; exit 1; }
 
 command -v git >/dev/null 2>&1 || die "git is required but not installed."
+command -v curl >/dev/null 2>&1 || die "curl is required but not installed."
 command -v claude >/dev/null 2>&1 || die \
   "claude not found on PATH. Install Claude Code first: https://code.claude.com/docs/en/setup"
 
@@ -61,9 +62,30 @@ if [ -f "$SETUP_DIR/CLAUDE.md" ]; then
   fi
 fi
 
-# --------------------------------------------------------------- 3. plugins
-MARKETPLACES=()
+# --------------------------------------------------------- 3. output styles
 FAILED=()
+
+if [ -f "$SETUP_DIR/output-styles.txt" ]; then
+  info "Installing output styles"
+  mkdir -p "$CLAUDE_DIR/output-styles"
+  while read -r url _rest <&3 || [ -n "${url:-}" ]; do
+    case "$url" in ''|\#*) continue ;; esac
+    name="${url##*/}"
+    dest="$CLAUDE_DIR/output-styles/$name"
+    # Download to a temp file first, so a failed fetch can't truncate a good one.
+    if curl -fsSL "$url" -o "$dest.part" 2>/dev/null; then
+      mv "$dest.part" "$dest"
+      ok "$name"
+    else
+      rm -f "$dest.part"
+      warn "could not fetch $url"
+      FAILED+=("$name")
+    fi
+  done 3< "$SETUP_DIR/output-styles.txt"
+fi
+
+# --------------------------------------------------------------- 4. plugins
+MARKETPLACES=()
 
 if [ -f "$SETUP_DIR/plugins.txt" ]; then
   info "Installing plugins"
@@ -92,7 +114,7 @@ if [ -f "$SETUP_DIR/plugins.txt" ]; then
   done 3< "$SETUP_DIR/plugins.txt"
 fi
 
-# ------------------------------------------------------------ 4. auto-update
+# ------------------------------------------------------------ 5. auto-update
 # Third-party marketplaces default to auto-update OFF. There is no CLI flag for
 # it, so patch settings.json directly. Only touches entries that already exist,
 # and only the autoUpdate key.
@@ -136,7 +158,7 @@ elif [ ${#MARKETPLACES[@]} -gt 0 ]; then
   warn "python3 not found -- enable auto-update manually via /plugin > Marketplaces"
 fi
 
-# ---------------------------------------------------------------- 5. summary
+# ---------------------------------------------------------------- 6. summary
 echo
 if [ ${#FAILED[@]} -gt 0 ]; then
   warn "Finished with ${#FAILED[@]} failure(s): ${FAILED[*]}"

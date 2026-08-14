@@ -1,0 +1,8 @@
+# Output styles to install into ~/.claude/output-styles/
+#
+# One URL per line. The filename is taken from the end of the URL.
+# Re-running the bootstrap re-downloads each one, so they stay current.
+#
+# Installing does not activate: pick one with /output-style in a session.
+
+https://raw.githubusercontent.com/alexgreensh/attention-span/main/output-styles/attention-kind.md

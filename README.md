@@ -8,20 +8,30 @@ My Claude Code config, same on every machine.
 curl -fsSL https://raw.githubusercontent.com/eXamqle/claude-setup/main/bootstrap.sh | bash
 ```
 
-Installs the plugins and links `CLAUDE.md` into `~/.claude/`. Safe to re-run —
-that's also how you apply changes.
+Installs the plugins and output styles, and links `CLAUDE.md` into `~/.claude/`.
+Safe to re-run — that's also how you apply changes.
+
+Output styles are installed but not switched on. Pick one with `/output-style`.
 
 ## Change something
 
-| Want to                  | Edit          |
-| ------------------------ | ------------- |
-| Change global rules      | `CLAUDE.md`   |
-| Add or remove a plugin   | `plugins.txt` |
+| Want to                | Edit                |
+| ---------------------- | ------------------- |
+| Change global rules    | `CLAUDE.md`         |
+| Add a plugin           | `plugins.txt`       |
+| Add an output style    | `output-styles.txt` |
 
 Then `git commit && git push`, and re-run the line above on the other machines.
 
 `CLAUDE.md` is symlinked, so edits there apply immediately on this machine
 without re-running anything.
+
+**Removing** a plugin needs one extra step — the bootstrap only installs, it
+never uninstalls. Delete the line, then on each machine run:
+
+```bash
+claude plugin uninstall plugin-name@marketplace-name
+```
 
 ## Adding a plugin
 

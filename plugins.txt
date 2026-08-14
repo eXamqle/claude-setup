@@ -12,5 +12,4 @@
 #
 # Lines starting with # and blank lines are ignored.
 
-ayghri/i-have-adhd             i-have-adhd@i-have-adhd
 alexgreensh/token-optimizer    token-optimizer@alexgreensh-token-optimizer
